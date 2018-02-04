@@ -1,0 +1,9 @@
+[submodule "repo/vivado-library"]
+	path = repo/vivado-library
+	url = https://github.com/digilent/vivado-library.git
+[submodule "linux/Zybo-Z7-20/project-spec/meta-user/recipes-apps/digilent-apps"]
+	path = linux/Zybo-Z7-20/project-spec/meta-user/recipes-apps/digilent-apps
+	url = https://github.com/Digilent/digilent-apps.git
+[submodule "sdsoc/linux/include/xfopencv"]
+	path = sdsoc/linux/include/xfopencv
+	url = https://github.com/Xilinx/xfopencv.git

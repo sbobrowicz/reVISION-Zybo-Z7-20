@@ -1,0 +1,42 @@
+===================================================================
+Random Notes on Creating an SDSoC Platform using these files
+===================================================================
+
+--lscript.ld were Generated from a simple helloworld project in sdk with heap and stack increased to 0x10000000 and 0x40000. 
+  Additional changes are also manually made to the freertos .ld (see a diff of the two files).
+
+--Used GUI to generate makefile, currently encountering warning that suggests the archive is not properly finding the boardfiles. Also, the problem 
+  specified here might be relevant, as that is the actual error I am receiving:
+
+  https://forums.xilinx.com/t5/SDSoC-Environment-and-reVISION/SDSoC-Platform-Utility-fails-to-generate-reference-design/td-p/801534
+
+  UPDATE: This bug was actually two bugs, I squashed them by doing two things:
+     1) Installed the zybo-z7 board files directly to /opt/Xilinx/SDx/2017.2/Vivado/data/boards/board_files. Removed copies of board files in proj_copy,
+        because they were not making it to the temporary archive created by spspfm anyways.
+     2) Deleted ~/.Xilinx/ . This fixed the issue in the forum above. 
+
+  I think the proper way to handle this problem is to document #2, but to undo #1 and remove the references to the board files in 
+  the vivado project, using the XDC to set constraints instead.
+
+--The method used to copy sysroot seems to break some links in /bin and /sbin. That should be
+  irrelevant since this folder will only be used for cross-compiling and linking in libraries and includes. 
+  It also seems like the ZCU102 platform ran into this same issue, because many of the broken links are also removed from their /bin folder.
+
+--It seems the issue where you can't select the linux root file system in SDSoC occurs when the Linux operating system is not set as the default OS. This
+  is definitely a Xilinx-side bug, but I need to workaround and modify the Makefile so that it puts the Linux OS as the default configuration. I can probably
+  do this by just moving it ahead of the other OS's in the Makefile. UPDATE: Turns out that Xilinx recommends you avoid setting the Linux Root File System setting in the 
+  wizard anyways. So this issue is irrelevant.
+
+--Need to ask Xilinx about the "fatal error: 'gnu/stubs-soft.h' file not found" error. It seems that SDSoC tries to compile with soft-float by default, but my
+  linux image only supports hard float. My current workaround is to add __ARM_PCS_VFP to the symbols for the SDSCC compiler and SDSC++ compiler using project
+  settings. UPDATE This error completely goes away when you don't specify root fs (I haven't double checked this). It seems Xilinx currently works around this 
+  by specifying this symbol (and others) as well as some compiler/linker options, in the sample json files.
+
+--Looks like I need to have users of the platform run export SYSROOT=<Platform Location>zybo_z7_20/sw/sysroot before launching sdx. This might be a problem in Windows.
+
+--Need to add -maxthreads 8 -maxjobs 16 to Miscellanous in C/C++ build settings for SDSCC,SDS++, and SDS Linkerin order to speed up builds.
+
+
+
+
+      
