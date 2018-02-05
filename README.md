@@ -108,7 +108,7 @@ WARNING*** You must have obtained this package using "git clone --recursive http
     ```
     mkdir output/zybo_z7_20/sw/sd_image
     mkdir output/zybo_z7_20/sw/sysroot
-    cp -f linux/Zybo-Z7-20/images/linux/rootfs.ext4 output/zybo_z7_20/sw/sd_image/
+    cp -f ../linux/Zybo-Z7-20/images/linux/rootfs.ext4 output/zybo_z7_20/sw/sd_image/
     cd output/zybo_z7_20/sw/sd_image
     mkdir mnt
     sudo mount -t ext4 -o loop ./rootfs.ext4 ./mnt
